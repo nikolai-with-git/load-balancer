@@ -1,4 +1,5 @@
 import balancer.LoadBalancer;
+import balancer.RandomLoadBalancer;
 import balancer.RoundRobinLoadBalancer;
 import model.Request;
 import model.Server;
