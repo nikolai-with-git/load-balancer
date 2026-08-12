@@ -3,7 +3,6 @@ package balancer;
 import model.Request;
 import model.Server;
 
-import java.util.List;
 import java.util.concurrent.*;
 
 public abstract class LoadBalancer {
@@ -16,7 +15,7 @@ public abstract class LoadBalancer {
     public abstract Server chooseServer();
 
     public LoadBalancer(){
-        threadPoolExecutor = new ThreadPoolExecutor(2,8,10L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(100));
+        threadPoolExecutor = new ThreadPoolExecutor(1,8,10L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(100));
         availableServers  = new CopyOnWriteArrayList<>();
         servers = new CopyOnWriteArrayList<>();
 
@@ -40,7 +39,8 @@ public abstract class LoadBalancer {
 
     private void routeRequest(Request request) {
         if (availableServers.isEmpty()){
-            throw new RuntimeException("There are no available servers");
+            System.out.println("There are no available servers");
+            return;
         }
         Server server = chooseServer();
         server.handleRequest(request);
