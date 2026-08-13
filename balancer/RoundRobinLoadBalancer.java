@@ -11,8 +11,8 @@ public class RoundRobinLoadBalancer extends LoadBalancer {
 
     @Override
     public Server chooseServer(List<Server> availableServers) {
-        counter.compareAndSet(Integer.MAX_VALUE, 0);
-        int serverIndex = counter.getAndIncrement() % availableServers.size();
+        int currentCounter = counter.getAndUpdate(c -> c == Integer.MAX_VALUE ? 0 : c+1);
+        int serverIndex = currentCounter % availableServers.size();
         return availableServers.get(serverIndex);
     }
 
